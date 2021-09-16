@@ -1,0 +1,29 @@
+name: Horusec workflow
+
+on:
+  pull_request:
+    branches: [ main ]
+
+  # Habilita este workflow para ser disparado direto da aba Actions
+  workflow_dispatch:
+
+
+jobs:
+  horusec-security:
+    name: horusec-security
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    # Iniciando Horusec
+    # mais informações: https://horusec.io/docs/getting-started/adding-horusec-in-the-pipeline/#github-actions
+    - name: Running Horusec Security
+      run: |
+        curl -fsSL https://horusec.io/bin/install.sh | bash
+        horusec start -p="./" -o="json" -O="results.json"
+    
+    - uses: actions/upload-artifact@v2
+      with:
+        name: horusec-results
+        path: results.json

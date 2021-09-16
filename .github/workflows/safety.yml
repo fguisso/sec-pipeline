@@ -1,0 +1,20 @@
+name: Safety workflow
+
+on:
+  pull_request:
+    branches: [ main ]
+
+  # Habilita este workflow para ser disparado direto da aba Actions
+  workflow_dispatch:
+
+jobs:
+  safety:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Usando a action com todos os parametros do Safety no default
+      # mais informações: https://github.com/pipeline-components/python-safety
+      - name: Security vulnerabilities scan
+        uses: pipeline-components/python-safety@v0.7.2

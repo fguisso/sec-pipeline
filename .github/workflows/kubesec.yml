@@ -1,0 +1,26 @@
+name: Kubesec
+
+on:
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  kubsec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Run kubesec scanner
+        id: kubesec-cli
+        uses: controlplaneio/kubesec-action@v0.0.2
+        with:
+          input: deployment.yaml
+          output: kubesec-result.log
+
+      - name: Archive results
+        uses: actions/upload-artifact@v2
+        with:
+          name: kubesec-result
+          path: kubesec-result.log

@@ -1,0 +1,25 @@
+name: OWASP ZAP Workflow
+
+on:
+  # schedule:
+  #  - cron: "0 23 1 1/1 *"
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  zap_scan:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    name: Scaneando a aplicação
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Rodar o OWASP ZAP Action Full Scan passando um target, você tambem pode utilizar as variaveis de ambiente do Github Actions.
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.2.0
+        with:
+          target: ${{ secrets.API_URL }}

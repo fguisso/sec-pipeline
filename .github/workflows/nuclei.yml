@@ -1,0 +1,31 @@
+name: Nuclei workflow
+
+on:
+  workflow_dispatch:
+    #schedule:
+    #- cron: "0 10 * * *"
+
+jobs:
+  nuclei-worker:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: /home/runner/go/bin/nuclei
+          key: ${{ runner.os }}-${{ hashFiles('/home/runner/go/bin/nuclei') }}
+
+      - uses: projectdiscovery/nuclei-action@main
+        with:
+          user-agent: true
+          urls: "urls.txt"
+          templates: "./"
+          nuclei-ignore: false
+          output: "nuclei.log"
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: nuclei.log
+          path: nuclei.log
