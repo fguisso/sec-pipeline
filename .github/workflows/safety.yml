@@ -1,10 +1,6 @@
 name: Safety workflow
 
 on:
-  pull_request:
-    branches: [ main ]
-
-  # Habilita este workflow para ser disparado direto da aba Actions
   workflow_dispatch:
 
 jobs:
